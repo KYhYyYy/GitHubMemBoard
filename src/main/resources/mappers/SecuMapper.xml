@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.githubmemboard.dao.SecuDAO">
+
+    <!-- <insert id="secuJoin" parameterType="com.icia.secu.dto.SecuDTO"> 원래 작성법 => SecuDTO에서 Alias를 secu로 지정 -->
+    <insert id="secuJoin" parameterType="secu">
+        INSERT INTO SECUDTO VALUES(#{secuId}, #{secuPw}, #{secuEmail})
+    </insert>
+
+    <select id="secuLogin" parameterType="secu" resultType="secu">
+        SELECT * FROM SECUDTO WHERE SECUID = #{secuId}
+    </select>
+
+</mapper>

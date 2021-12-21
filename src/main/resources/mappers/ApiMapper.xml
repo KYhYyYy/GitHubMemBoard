@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.githubmemboard.dao.ApiDAO">
+    <insert id="insertMap" parameterType="api">
+        INSERT INTO STORE VALUES(#{storeName}, #{lat}, #{lng})
+    </insert>
+
+    <select id="storeList" resultType="api">
+        SELECT * FROM STORE
+    </select>
+
+    <select id="store" parameterType="String" resultType="api">
+        SELECT * FROM STORE WHERE STORENAME = #{storeName}
+    </select>
+</mapper>

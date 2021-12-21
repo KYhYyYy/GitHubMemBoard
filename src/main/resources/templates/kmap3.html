@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="KYUNGHWAN" />
+    <meta name="description" content="KAKAO MAP List" />
+    <title>KAKAO MAP List</title>
+</head>
+<body>
+    <table>
+        <caption>업체 목록</caption>
+        <tr>
+            <th>업체명</th>
+            <th>위도</th>
+            <th>경도</th>
+        </tr>
+
+        <tr th:each="list : ${store}">
+            <td><a th:text="${list.storeName}" th:href="@{kmap4(storeName=${list.storeName})}"></a></td>
+            <td th:text="${list.lat}"></td>
+            <td th:text="${list.lng}"></td>
+        </tr>
+    </table>
+</body>
+</html>

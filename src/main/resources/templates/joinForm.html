@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="AdminKit">
+	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+
+	<link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-up.html" />
+
+	<title>Sign Up | AdminKit Demo</title>
+
+	<link href="css/app.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<main class="d-flex w-100">
+		<div class="container d-flex flex-column">
+			<div class="row vh-100">
+				<div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+					<div class="d-table-cell align-middle">
+
+						<div class="text-center mt-4">
+							<h1 class="h2">회원가입</h1>
+							<p class="lead">
+								ICIA_MEMBOARD 프로젝트 회원가입
+							</p>
+						</div>
+
+						<div class="card">
+							<div class="card-body">
+								<div class="m-sm-4">
+									<form action="mJoin" method="POST" enctype="multipart/form-data">
+										<div class="mb-3">
+											<label class="form-label">아이디</label>
+											<input class="form-control form-control-lg" type="text" name="mId" placeholder="Enter your ID" id="mId"/>
+											<input class="form-control form-control-lg" type="button" value="중복체크" onclick="idOverlap()" />
+											<br/><span id="confirmId"></span>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">비밀번호</label>
+											<input class="form-control form-control-lg" type="password" name="mPw" id="mPw" placeholder="Enter your Password" onkeyup="pwRegExp()" />
+											<br/><span id="pwRegExp"></span>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">비밀번호 확인</label>
+											<input class="form-control form-control-lg" type="password" id="checkPw" onkeyup="pwOverlap()" />
+											<br/><span id="confirmPw"></span>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">이메일</label>
+											<input class="form-control form-control-lg" type="email" name="mEmail" id="mEmail" placeholder="Enter your Email" />
+											<br/><span id="emailConfirmText"><input type="button" value="인증" onclick="confirmEmail()"></span>
+										</div>
+
+										<div class="mb-3">
+											<label class="form-label">이름</label>
+											<input class="form-control form-control-lg" type="text" name="mName" placeholder="Enter your Name" />
+										</div>
+										<div class="mb-3">
+											<label class="form-label">나이</label>
+											<input class="form-control form-control-lg" type="text" name="mAge" placeholder="Enter your Age" />
+										</div>
+										<div class="mb-3">
+											<label class="form-label">사진</label>
+											<input class="form-control form-control-lg" type="file" name="mProfile" />
+										</div>
+										<div class="text-center mt-3">
+											<!-- <button type="submit" class="btn btn-lg btn-primary">Sign up</button> -->
+											<input type="submit" class="btn btn-lg btn-primary" value="가입" />
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script src="js/app.js"></script>
+
+</body>
+<script
+		src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+		crossorigin="anonymous"></script>
+<script type="text/javascript">
+	// 아이디 중복체크
+	function idOverlap(){
+		let idCheck = document.getElementById("mId").value;
+		let confirmId = document.getElementById("confirmId");
+		let idPass = false;
+
+
+		console.log("mId : " + idCheck)
+		$.ajax({
+			type : "POST" ,
+			url : "A_idoverlap" ,
+			data : { "mId" : idCheck } ,
+			async : false,
+			dataType : "text" ,
+			success :  function(data){
+// 성공시
+				if(data=="OK"){
+					confirmId.style.color="#0000ff";
+					confirmId.innerHTML = "사용 가능한 아이디";
+					idPass = true;
+
+				} else {
+					confirmId.style.color="#ff0000";
+					confirmId.innerHTML = "사용 불가능한 아이디";
+					idPass = false;
+				}
+			} ,
+			error : function(){
+// 실패시
+				alert("idOverlap함수 통신실패!");
+			}
+		});
+		return idPass;
+	}
+
+	// 비밀번호 정규식
+	function pwRegExp(){
+		let mPw = document.getElementById("mPw").value;
+		let pwRegExp = document.getElementById("pwRegExp");
+		let pwPass = false;
+
+		let num = mPw.search(/[0-9]/g);
+		let eng = mPw.search(/[a-z]/ig);
+		let spe = mPw.search(/[`~!@#$%^&*|\\\'\";:\/?]/gi);
+
+		if(mPw.length < 8 || mPw.length > 15){
+			pwRegExp.style.color="#ff0000";
+			pwRegExp.innerHTML = "8자리 ~ 15자리 이내로 입력해주세요!";
+
+		} else if(mPw.search(/\s/) != -1) {
+			pwRegExp.style.color="#ff0000";
+			pwRegExp.innerHTML = "비밀번호는 공백 없이 입력해주세요!";
+		} else if(num < 0 || eng < 0 || spe < 0){
+			pwRegExp.style.color="#ff0000";
+			pwRegExp.innerHTML = "영문, 숫자, 특수문자를 혼합하여 입력해주세요!";
+		} else {
+			pwRegExp.style.color="#0000ff";
+			pwRegExp.innerHTML = "적절한 비밀번호 입니다!";
+			pwPass = true;
+		}
+
+		return pwPass;
+	}
+
+	// 비밀번호 일치여부 확인
+	function pwOverlap(){
+		let mPw = document.getElementById("mPw").value;
+		let pwRegExp = document.getElementById("pwRegExp");
+
+		let checkPw = document.getElementById("checkPw").value;
+		let confirmPw = document.getElementById("confirmPw");
+
+		let pwPass = false;
+
+		pwRegExp.innerHTML = "";
+
+		if(mPw==checkPw){
+			confirmPw.style.color = "#0000ff";
+			confirmPw.innerHTML = "비밀번호가 일치합니다!";
+			pwPass = true;
+
+		} else {
+			confirmPw.style.color = "#ff0000";
+			confirmPw.innerHTML = "비밀번호를 확인해주세요!";
+		}
+		return pwPass;
+	}
+
+	// 이메일 인증
+	function confirmEmail(){
+		let mEmail = document.getElementById("mEmail").value;
+		let emailConfirmText = document.getElementById("emailConfirmText");
+
+		$.ajax({
+			type : "GET" ,
+			url : "A_emailConfirm" ,
+			data : {"mEmail" : mEmail} ,
+			dataType : "text" ,
+			success : function(data){
+				alert("입력하신 이메일로 인증번호가 발송됐습니다!");
+				emailConfirmText.innerHTML = "<input type='hidden' id='check2' value='" + data + "'>"
+						+ "<br/><input type='text' placeholder='인증번호 입력' id='emailKey'>"
+						+ " <input type='button' value='확인' onclick='keyCheck()'>"
+						+ "<br/><span id='check1'></span>";
+
+			} ,
+			error : function(){
+				alert("인증번호 발송에 실패했습니다!");
+			}
+		});
+
+
+
+	}
+
+	// 인증번호 확인
+	function keyCheck(){
+		let emailKey = document.getElementById("emailKey").value;
+		let check2 = document.getElementById("check2").value;
+
+		let check1 = document.getElementById("check1");
+
+		let emailPass = false;
+
+		if(emailKey==check2){
+			check1.style.color = "#0000ff";
+			check1.innerHTML = "인증번호가 일치합니다!";
+			emailPass = true;
+		} else {
+			check1.style.color = "#ff0000";
+			check1.innerHTML = "인증번호가 일치하지 않습니다!";
+		}
+		return emailPass;
+	}
+</script>
+
+
+</html>
